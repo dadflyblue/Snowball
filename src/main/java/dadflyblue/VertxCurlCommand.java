@@ -48,12 +48,6 @@ public class VertxCurlCommand implements Runnable {
 
     client.request(options)
         .chain(r -> r.send(data))
-        .map(r ->  {
-          System.out.println(
-            "< " + r.version().alpnName().toUpperCase() + " " + r.statusCode() + " " + r.statusMessage() + " >");
-          System.out.println();
-          return r;
-        })
         .onItem().transformToMulti(HttpClientResponse::toMulti)
         .invoke(System.out::print)
         .collect().last()
