@@ -8,7 +8,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
 
-public class UnixDomainSocket extends Socket {
+class UnixDomainSocket extends Socket {
   private static final SocketOption<Boolean> SO_OOBINLINE =
       new SocketOption<>() {
         public String name() {
