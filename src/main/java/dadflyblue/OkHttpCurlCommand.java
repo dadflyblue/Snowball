@@ -1,16 +1,13 @@
 package dadflyblue;
 
+import dadflyblue.unixsocket.UnixDomainSocketFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import org.newsclub.net.unix.AFSocketFactory;
-import org.newsclub.net.unix.AFUNIXSocketAddress;
 import picocli.CommandLine;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
@@ -36,18 +33,14 @@ public class OkHttpCurlCommand implements Runnable {
     var client = new OkHttpClient.Builder()
       .callTimeout(Duration.ofDays(1))
       .readTimeout(Duration.ofDays(1))
+      .writeTimeout(Duration.ofDays(1))
       .build();
 
     if (unixSocketAddress != null) {
-      try {
-        var b = client.newBuilder();
-        b.setSocketFactory$okhttp(
-            new AFSocketFactory.FixedAddressSocketFactory(
-                AFUNIXSocketAddress.of(new File(unixSocketAddress))));
-        client = b.build();
-      } catch (SocketException e) {
-        throw new RuntimeException(e);
-      }
+      var b = client.newBuilder();
+      b.setSocketFactory$okhttp(
+          new UnixDomainSocketFactory(unixSocketAddress));
+      client = b.build();
     }
 
     var request = new Request.Builder()
