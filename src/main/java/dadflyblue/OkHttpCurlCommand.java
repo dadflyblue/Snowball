@@ -34,7 +34,9 @@ public class OkHttpCurlCommand implements Runnable {
   @Override
   public void run() {
     var client = new OkHttpClient.Builder()
-      .callTimeout(Duration.ofDays(1)).build();
+      .callTimeout(Duration.ofDays(1))
+      .readTimeout(Duration.ofDays(1))
+      .build();
 
     if (unixSocketAddress != null) {
       try {

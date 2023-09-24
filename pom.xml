@@ -42,6 +42,8 @@
     </dependency>
     <!-- for osx intel native transport -->
     <!-- refer: https://vertx.io/docs/vertx-core/java/#_native_transports -->
+    <!-- refer: https://quarkus.io/guides/vertx-reference#native-transport -->
+    <!-- refer: https://github.com/netty/netty/issues/10991 -->
     <!-- note: this feature desn't support by graalvm native-image -->
     <dependency>
       <groupId>io.netty</groupId>
