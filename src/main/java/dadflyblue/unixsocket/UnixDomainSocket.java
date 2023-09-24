@@ -331,9 +331,7 @@ class UnixDomainSocket extends Socket {
   @Override
   public String toString() {
     if (channel.isConnected())
-      return "Socket[addr=" + getInetAddress() +
-          ",port=" + getPort() +
-          ",localport=" + getLocalPort() + "]";
+      return "Socket[addr=" + address + "]";
     return "Socket[unconnected]";
   }
 
