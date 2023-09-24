@@ -9,7 +9,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Set;
 
 class UnixDomainSocket extends Socket {
-  private static final SocketOption<Boolean> SO_OOBINLINE =
+  static final SocketOption<Boolean> SO_OOBINLINE =
       new SocketOption<>() {
         public String name() {
           return "SO_OOBINLINE";
@@ -22,21 +22,23 @@ class UnixDomainSocket extends Socket {
         public String toString() {
           return name();
         }
-      };
+  };
+
   private final SocketChannel channel;
+  private final UnixDomainSocketAddress address;
   private volatile boolean inputShutdown;
   private volatile boolean outputShutdown;
-  // Timeout "option" value for reads
   private volatile int timeout;
 
-  private UnixDomainSocket(SocketChannel channel) throws IOException {
+  private UnixDomainSocket(SocketChannel channel, String path) throws IOException {
     super(DummySocketImpl.create());
     this.channel = channel;
+    this.address = UnixDomainSocketAddress.of(path);
   }
 
-  static Socket create(SocketChannel channel) {
+  static Socket create(SocketChannel channel, String path) {
     try {
-      return new UnixDomainSocket(channel);
+      return new UnixDomainSocket(channel, path);
     } catch (IOException e) {
       throw new InternalError(e);
     }
@@ -64,7 +66,7 @@ class UnixDomainSocket extends Socket {
     if (timeout < 0)
       throw new IllegalArgumentException("connect: timeout can't be negative");
     try {
-      connect(remote);
+      channel.connect(address);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -1,6 +1,9 @@
 package dadflyblue.unixsocket;
 
 import javax.net.SocketFactory;
+
+import io.vertx.mutiny.core.net.SocketAddress;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -23,15 +26,13 @@ public class UnixDomainSocketFactory extends SocketFactory {
 
   @Override
   public Socket createSocket() throws IOException {
-    var channel = SocketChannel.open(UnixDomainSocketAddress.of(path));
-    channel.configureBlocking(true);
-    return UnixDomainSocket.create(channel);
+    var channel = SocketChannel.open(StandardProtocolFamily.UNIX);
+    return UnixDomainSocket.create(channel, path);
   }
 
   @Override
   public Socket createSocket(String host, int port) throws IOException {
-    var channel = SocketChannel.open(StandardProtocolFamily.UNIX);
-    return UnixDomainSocket.create(channel);
+    return createSocket();
   }
 
   @Override
