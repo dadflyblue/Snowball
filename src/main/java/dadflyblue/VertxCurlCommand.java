@@ -15,7 +15,7 @@ import picocli.CommandLine.Parameters;
         versionProvider = VersionProvider.class)
 public class VertxCurlCommand implements Runnable {
 
-  @Option(names = {"--ssl", "-s"}, defaultValue = "false", description = "Use ssl or not?")
+  @Option(names = {"--ssl"}, defaultValue = "false", description = "Use ssl or not?")
   boolean ssl;
 
   @Option(names = {"--host"}, defaultValue = "localhost", description = "The host name, default: localhost.")
@@ -40,6 +40,7 @@ public class VertxCurlCommand implements Runnable {
   public void run() {
     var client = Vertx.vertx(
       new VertxOptions().setPreferNativeTransport(true)).createHttpClient();
+
     var options = new RequestOptions()
       .setHost(host)
       .setSsl(ssl)
