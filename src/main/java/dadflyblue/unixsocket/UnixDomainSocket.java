@@ -31,7 +31,7 @@ class UnixDomainSocket extends Socket {
   private volatile int timeout;
 
   private UnixDomainSocket(SocketChannel channel, String path) throws IOException {
-    super(DummySocketImpl.create());
+    super(NullSocketImpl.create());
     this.channel = channel;
     this.address = UnixDomainSocketAddress.of(path);
   }
@@ -53,22 +53,14 @@ class UnixDomainSocket extends Socket {
   }
 
   @Override
-  public void connect(SocketAddress remote) {
-    if (!channel.isConnected()) {
-      connect(remote, 0);
-    }
+  public void connect(SocketAddress remote) throws IOException {
+    connect(remote, 0);
   }
 
   @Override
-  public void connect(SocketAddress remote, int timeout) {
-    if (remote == null)
-      throw new IllegalArgumentException("connect: The address can't be null");
-    if (timeout < 0)
-      throw new IllegalArgumentException("connect: timeout can't be negative");
-    try {
+  public void connect(SocketAddress remote, int timeout) throws IOException {
+    if (!channel.isConnected()) {
       channel.connect(address);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
     }
   }
 

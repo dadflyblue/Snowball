@@ -2,13 +2,10 @@ package dadflyblue.unixsocket;
 
 import javax.net.SocketFactory;
 
-import io.vertx.mutiny.core.net.SocketAddress;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.StandardProtocolFamily;
-import java.net.UnixDomainSocketAddress;
 import java.nio.channels.SocketChannel;
 
 public class UnixDomainSocketFactory extends SocketFactory {

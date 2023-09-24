@@ -8,12 +8,12 @@ import java.net.SocketImpl;
 import java.net.SocketOption;
 import java.util.Set;
 
-class DummySocketImpl extends SocketImpl {
-  private DummySocketImpl() {
+class NullSocketImpl extends SocketImpl {
+  private NullSocketImpl() {
   }
 
   static SocketImpl create() {
-    return new DummySocketImpl();
+    return new NullSocketImpl();
   }
 
   private static <T> T shouldNotGetHere() {
