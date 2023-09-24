@@ -47,6 +47,7 @@ public class VertxCurlCommand implements Runnable {
       .setMethod(HttpMethod.valueOf(method))
       .setURI(url);
 
+    // Currently, this only works for JVM but not native-image of Graalvm.
     if (unixSocketAddress != null) {
       options.setServer(SocketAddress.domainSocketAddress(unixSocketAddress));
     }

@@ -36,6 +36,7 @@ public class OkHttpCurlCommand implements Runnable {
       .writeTimeout(Duration.ofDays(1))
       .build();
 
+    // It works for native-image of Graalvm.
     if (unixSocketAddress != null) {
       var b = client.newBuilder();
       b.setSocketFactory$okhttp(
