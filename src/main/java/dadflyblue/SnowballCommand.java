@@ -5,7 +5,7 @@ import picocli.CommandLine.Command;
 
 @TopCommand
 @Command(name = "snowball", mixinStandardHelpOptions = true,
-    subcommands = {TestThreadPoolCommand.class, VertxCurlCommand.class},
+    subcommands = {TestThreadPoolCommand.class, VertxCurlCommand.class, OkHttpCurlCommand.class},
     versionProvider = VersionProvider.class)
 public class SnowballCommand implements Runnable {
 
