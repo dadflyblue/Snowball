@@ -5,27 +5,29 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-@CommandLine.Command(name = "ok-curl",
+@Command(name = "ok-curl",
     mixinStandardHelpOptions = true,
     versionProvider = VersionProvider.class)
 public class OkHttpCurlCommand implements Runnable {
 
-  @CommandLine.Parameters(paramLabel = "<url>", defaultValue = "", description = "The http url.")
+  @Parameters(paramLabel = "<url>", defaultValue = "", description = "The http url.")
   String url;
 
-  @CommandLine.Option(names = {"--data", "-d"}, description = "The data(payload) to send.")
+  @Option(names = {"--data", "-d"}, description = "The data(payload) to send.")
   String data;
 
-  @CommandLine.Option(names = {"--method", "-m"}, defaultValue = "GET", description = "The http method, default: GET.")
+  @Option(names = {"--method", "-m"}, defaultValue = "GET", description = "The http method, default: GET.")
   String method;
 
-  @CommandLine.Option(names = {"--unix-socket", "-x"}, description = "The unix socket address.")
+  @Option(names = {"--unix-socket", "-x"}, description = "The unix socket address.")
   String unixSocketAddress;
 
   @Override
