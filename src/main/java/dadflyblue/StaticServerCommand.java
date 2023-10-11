@@ -4,9 +4,13 @@ package dadflyblue;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.handler.StaticHandler;
-import picocli.CommandLine.*;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
 import java.util.concurrent.CountDownLatch;
+
+import static io.vertx.ext.web.handler.FileSystemAccess.*;
 
 @Command(name = "static-server",
     mixinStandardHelpOptions = true,
@@ -21,12 +25,22 @@ public class StaticServerCommand implements Runnable {
       description = "The serving port of static server, default: 9000")
   int port;
 
+  @Option(names = {"--dir"}, defaultValue = "true",
+      description = "If list directory? When it's false, will open \"index.html\", default: true")
+  boolean listDir;
+
+  @Option(names = {"--root"}, defaultValue = "false",
+      description = "If can access full file system, starting at \"/\"?, default: false")
+  boolean root;
+
   @Override
   public void run() {
     var vertx = Vertx.vertx();
     var r = Router.router(vertx);
 
-    r.route("/*").handler(StaticHandler.create(path));
+    r.route("/*").handler(
+        StaticHandler.create(root ? ROOT: RELATIVE, path)
+            .setDirectoryListing(listDir));
     vertx.createHttpServer()
         .requestHandler(r)
         .listenAndAwait(port);
