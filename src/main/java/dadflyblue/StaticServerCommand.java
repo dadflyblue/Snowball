@@ -36,11 +36,13 @@ public class StaticServerCommand implements Runnable {
   @Override
   public void run() {
     var vertx = Vertx.vertx();
-    var r = Router.router(vertx);
 
+    var r = Router.router(vertx);
     r.route("/*").handler(
-        StaticHandler.create(root ? ROOT: RELATIVE, path)
-            .setDirectoryListing(listDir));
+        StaticHandler.create(
+            root ? ROOT: RELATIVE, path)
+        .setDirectoryListing(listDir));
+
     vertx.createHttpServer()
         .requestHandler(r)
         .listenAndAwait(port);
@@ -49,9 +51,8 @@ public class StaticServerCommand implements Runnable {
 
     // Since vertx is serving the requests in an async way,
     // we need to hold the main thread to prevent the process from terminating.
-    var l = new CountDownLatch(1);
     try {
-      l.await();
+      new CountDownLatch(1).await();
     } catch (InterruptedException ignored) {
     }
   }
